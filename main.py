@@ -1,9 +1,34 @@
 from fastapi import FastAPI
-from routes.route import router
+from routes.route import router as todo_router
+from routes.uploads import router as upload_router
+from config.database import client
+
 
 app = FastAPI()
 
-app.include_router(router)
+# Include routers
+app.include_router(todo_router)
+app.include_router(upload_router, prefix="/uploads")
+
+
+# from fastapi.lifecycle import Lifespan
+
+# def app_lifespan(app: FastAPI) -> Lifespan:
+#     """
+#     Lifespan function to handle startup and shutdown events.
+#     """
+#     async def startup():
+#         print("Application startup: MongoDB connection initialized.")
+
+#     async def shutdown():
+#         print("Application shutdown: Closing MongoDB connection.")
+#         client.close()
+
+#     return startup, shutdown
+
+# app = FastAPI(lifespan=app_lifespan)
+
+
 
 
 # from pymongo.mongo_client import MongoClient
@@ -17,3 +42,4 @@ app.include_router(router)
 #     print("Pinged your deployment. You successfully connected to MongoDB!")
 # except Exception as e:
 #     print(e)
+

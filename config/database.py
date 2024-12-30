@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
+import boto3 
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -21,4 +22,21 @@ client = MongoClient(MONGO_URI)
 
 # Access the database and collection
 db = client[MONGO_DB]
-collection_name = db["todo_collection"]
+
+# Define collections
+todo_collection = db["todo_collection"]  # Collection for storing todo items
+uploads_collection = db["uploads_collection"]  # Collection for storing uploaded file metadata
+
+
+# AWS S3 Configuration
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_BUCKET_NAME = os.getenv("AWS_BUCKET_NAME")
+AWS_REGION = os.getenv("AWS_REGION")
+
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION
+)
